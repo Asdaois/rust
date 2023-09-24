@@ -2,13 +2,15 @@ mod init;
 
 use sdl2::{
     keyboard::Scancode,
+    pixels::Color,
+    render::Canvas,
     sys::{SDL_DestroyWindow, SDL_Quit},
     video::Window,
     Sdl,
 };
 pub struct Game {
     is_running: bool,
-    window: Window,
+    canvas: Canvas<Window>,
     sdl_context: Sdl,
 }
 
@@ -26,7 +28,6 @@ impl Game {
     }
     /// Shutdown the [`Game`]
     pub unsafe fn shut_down(&self) {
-        SDL_DestroyWindow(self.window.raw());
         SDL_Quit();
     }
 
@@ -49,5 +50,9 @@ impl Game {
         }
     }
     fn update_game(&self) {}
-    fn generate_output(&self) {}
+    fn generate_output(&mut self) {
+        self.canvas.set_draw_color(Color::RGBA(0, 0, 255, 255));
+        self.canvas.clear();
+        self.canvas.present();
+    }
 }

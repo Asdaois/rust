@@ -7,9 +7,10 @@ impl Game {
             Ok(sdl) => {
                 let video_subsystem = sdl.video().unwrap();
                 let window = video_subsystem.window("Game", 480, 480).build().unwrap();
+                let canvas = window.into_canvas().build().unwrap();
 
                 return Game {
-                    window,
+                    canvas,
                     is_running: true,
                     sdl_context: sdl,
                 };
