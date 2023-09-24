@@ -1,7 +1,8 @@
 mod init;
 
 use sdl2::{
-    sys::{SDL_DestroyWindow, SDL_Event, SDL_Quit},
+    keyboard::Scancode,
+    sys::{SDL_DestroyWindow, SDL_Quit},
     video::Window,
     Sdl,
 };
@@ -34,11 +35,17 @@ impl Game {
 
         for event in event_pump.poll_iter() {
             match event {
-                sdl2::event::Event::Quit { timestamp } => {
+                sdl2::event::Event::Quit { timestamp: _ } => {
                     self.is_running = false;
                 }
                 _ => (),
             }
+        }
+
+        let keyboard = event_pump.keyboard_state();
+
+        if keyboard.is_scancode_pressed(Scancode::Escape) {
+            self.is_running = false;
         }
     }
     fn update_game(&self) {}
