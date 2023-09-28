@@ -1,3 +1,4 @@
+mod generate_ouput;
 mod init;
 pub static THICKNESS: u32 = 15;
 pub static PADDLE_H: f32 = 100.0;
@@ -67,46 +68,5 @@ impl Game {
         let delta_time = ticks_from_previous / 100.0;
 
         self.ticks_count = ticks;
-    }
-    fn generate_output(&mut self) {
-        self.canvas.set_draw_color(Color::RGBA(0, 0, 255, 255));
-
-        self.canvas.clear();
-
-        self.canvas.set_draw_color(Color::RGBA(255, 255, 255, 255));
-
-        // BEGIN DRAW WALLS
-        self.canvas
-            .fill_rect(Rect::new(0, 0, WIDTH, THICKNESS))
-            .unwrap();
-
-        self.canvas
-            .fill_rect(Rect::new(0, (HEIGHT - THICKNESS) as i32, WIDTH, THICKNESS))
-            .unwrap();
-
-        self.canvas
-            .fill_rect(Rect::new((WIDTH - THICKNESS) as i32, 0, THICKNESS, HEIGHT))
-            .unwrap();
-        // END DRAW WALLS
-
-        self.canvas
-            .fill_rect(Rect::new(
-                self.paddle_position.x as i32,
-                self.paddle_position.y as i32,
-                THICKNESS,
-                50,
-            ))
-            .unwrap();
-
-        self.canvas
-            .fill_rect(Rect::new(
-                self.ball_position.x as i32,
-                self.ball_position.y as i32,
-                THICKNESS,
-                THICKNESS,
-            ))
-            .unwrap();
-
-        self.canvas.present();
     }
 }
