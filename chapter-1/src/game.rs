@@ -4,15 +4,8 @@ static PADDLE_H: f32 = 100.0;
 static WIDTH: u32 = 480;
 static HEIGHT: u32 = 480;
 
-use std::os::fd::IntoRawFd;
-
 use sdl2::{
-    keyboard::Scancode,
-    pixels::Color,
-    rect::Rect,
-    render::Canvas,
-    sys::{SDL_DestroyWindow, SDL_Quit},
-    video::Window,
+    keyboard::Scancode, pixels::Color, rect::Rect, render::Canvas, sys::SDL_Quit, video::Window,
     Sdl,
 };
 pub struct Game {
