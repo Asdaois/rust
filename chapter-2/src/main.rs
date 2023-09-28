@@ -5,7 +5,9 @@ pub mod game;
 pub mod math;
 
 fn main() {
-    let game = Game {};
+    let mut game = Box::new(Game::new("Platform".into(), 1024, 768));
 
-    println!("Hello, world!");
+    if game.is_running() {
+        game.run_loop();
+    }
 }
