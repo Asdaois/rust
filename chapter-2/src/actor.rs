@@ -1,8 +1,8 @@
 use std::rc::Rc;
 
-use crate::game::Game;
+use crate::{components::Component, game::Game};
 
-use self::{components::Component, state::State, transform::Transform};
+use self::{state::State, transform::Transform};
 
 mod components;
 pub mod state;
@@ -13,8 +13,8 @@ pub struct Actor {
     /// Actor's state
     pub state: State,
     pub transform: Transform,
-    pub components: Vec<Component>,
-    game: Rc<Game>,
+    pub components: Vec<Box<Component>>,
+    game: Box<Game>,
 }
 
 impl Actor {

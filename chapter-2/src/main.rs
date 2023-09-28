@@ -1,6 +1,7 @@
 use crate::game::Game;
 
 pub mod actor;
+pub mod components;
 pub mod game;
 pub mod math;
 
