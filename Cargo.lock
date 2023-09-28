@@ -31,6 +31,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "chapter-2"
+version = "0.1.0"
+
+[[package]]
 name = "cmake"
 version = "0.1.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
