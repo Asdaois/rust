@@ -1,4 +1,4 @@
-use super::{Game, Vector2, HEIGHT, PADDLE_H, WIDTH};
+use super::{Game, Vector2, HEIGHT, WIDTH};
 
 impl Game {
     pub fn init() -> Game {

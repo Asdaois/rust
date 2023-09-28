@@ -7,10 +7,7 @@ pub static HEIGHT: u32 = 480;
 
 use std::time::Duration;
 
-use sdl2::{
-    keyboard::Scancode, pixels::Color, rect::Rect, render::Canvas, sys::SDL_Quit, video::Window,
-    Sdl,
-};
+use sdl2::{keyboard::Scancode, render::Canvas, sys::SDL_Quit, video::Window, Sdl};
 
 pub struct Vector2 {
     pub x: f64,
@@ -87,7 +84,17 @@ impl Game {
 
         if self.paddle_direction != 0 {
             self.paddle_position.y += self.paddle_direction as f64 * 300. * delta_time;
+
+            let top_border = PADDLE_H as f64 / 2. - 40.;
+            let bot_border = HEIGHT as f64 - PADDLE_H as f64 / 2. - THICKNESS as f64;
+
+            if self.paddle_position.y < top_border {
+                self.paddle_position.y = top_border;
+            } else if self.paddle_position.y > bot_border {
+                self.paddle_position.y = bot_border;
+            }
         }
+
         self.ticks_count = ticks;
     }
 }
