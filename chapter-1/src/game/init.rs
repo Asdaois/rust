@@ -1,4 +1,4 @@
-use super::Game;
+use super::{Game, Vector2, HEIGHT, PADDLE_H, WIDTH};
 
 impl Game {
     pub fn init() -> Game {
@@ -13,6 +13,17 @@ impl Game {
                     canvas,
                     is_running: true,
                     sdl_context: sdl,
+                    paddle_position: Vector2 {
+                        x: 5.,
+                        y: HEIGHT as f64 / 2.0 - 25.,
+                    },
+                    ball_position: Vector2 {
+                        x: WIDTH as f64 / 2.0,
+                        y: HEIGHT as f64 / 2.0 - 7.5,
+                    },
+                    ball_velocity: Vector2 { x: 0., y: 0. },
+                    ball_direction: true,
+                    ticks_count: 0,
                 };
             }
             Err(message) => {
