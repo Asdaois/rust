@@ -95,6 +95,33 @@ impl Game {
             }
         }
 
+        self.ball_position.x += self.ball_velocity.x * delta_time;
+        self.ball_position.y += self.ball_velocity.y * delta_time;
+
+        let diff = (self.paddle_position.y - self.ball_position.y).abs();
+        if diff <= PADDLE_H as f64 / 2. 
+		    // We are in the correct x-position
+		    && self.ball_position.x <= 25. && self.ball_position.x >= 20. 
+		    // The ball is moving to the left
+		    && self.ball_velocity.x < 0.
+        {
+            self.ball_velocity.x *= -1.;
+        } else if self.ball_position.x < 0. {
+            self.is_running = false;
+        } else if self.ball_position.x >= (WIDTH - THICKNESS) as f64
+        && self.ball_velocity.x > 0. {
+            self.ball_velocity.x *= -1.;
+        }
+
+        if self.ball_position.y <= THICKNESS as f64 && self.ball_velocity.y < 0. {
+            self.ball_velocity.y *= -1.;
+        }
+        else if self.ball_position.y >= (HEIGHT - THICKNESS) as f64 
+        && self.ball_velocity.y > 0.
+	    {
+		    self.ball_velocity.y *= -1.;
+	    }
+
         self.ticks_count = ticks;
     }
 }

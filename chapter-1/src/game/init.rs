@@ -21,7 +21,7 @@ impl Game {
                         x: WIDTH as f64 / 2.0,
                         y: HEIGHT as f64 / 2.0 - 7.5,
                     },
-                    ball_velocity: Vector2 { x: 0., y: 0. },
+                    ball_velocity: Vector2 { x: 200., y: 235. },
                     ball_direction: true,
                     ticks_count: 0,
                     paddle_direction: 0,
