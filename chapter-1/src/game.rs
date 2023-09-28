@@ -5,6 +5,8 @@ pub static PADDLE_H: f32 = 100.0;
 pub static WIDTH: u32 = 480;
 pub static HEIGHT: u32 = 480;
 
+use std::time::Duration;
+
 use sdl2::{
     keyboard::Scancode, pixels::Color, rect::Rect, render::Canvas, sys::SDL_Quit, video::Window,
     Sdl,
@@ -21,6 +23,7 @@ pub struct Game {
     sdl_context: Sdl,
 
     paddle_position: Vector2,
+    paddle_direction: i32,
     ball_position: Vector2,
     ball_velocity: Vector2,
     ball_direction: bool,
@@ -61,12 +64,30 @@ impl Game {
         if keyboard.is_scancode_pressed(Scancode::Escape) {
             self.is_running = false;
         }
+
+        self.paddle_direction = 0;
+        if keyboard.is_scancode_pressed(Scancode::W) {
+            self.paddle_direction -= 1;
+        }
+        if keyboard.is_scancode_pressed(Scancode::S) {
+            self.paddle_direction += 1;
+        }
     }
+
     fn update_game(&mut self) {
         let ticks = self.sdl_context.timer().unwrap().ticks();
-        let ticks_from_previous = (ticks - self.ticks_count) as f32;
-        let delta_time = ticks_from_previous / 100.0;
+        let ticks_from_previous = (ticks - self.ticks_count) as f64;
+        std::thread::sleep(Duration::from_millis(16));
 
+        let mut delta_time: f64 = ticks_from_previous / 100.0;
+
+        if delta_time > 0.05 {
+            delta_time = 0.05;
+        }
+
+        if self.paddle_direction != 0 {
+            self.paddle_position.y += self.paddle_direction as f64 * 300. * delta_time;
+        }
         self.ticks_count = ticks;
     }
 }

@@ -24,6 +24,7 @@ impl Game {
                     ball_velocity: Vector2 { x: 0., y: 0. },
                     ball_direction: true,
                     ticks_count: 0,
+                    paddle_direction: 0,
                 };
             }
             Err(message) => {
