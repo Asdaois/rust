@@ -13,7 +13,7 @@ pub struct Actor {
     /// Actor's state
     pub state: State,
     pub transform: Transform,
-    pub components: Vec<Box<Component>>,
+    pub components: Vec<Box<dyn Component>>,
     game: Box<Game>,
 }
 

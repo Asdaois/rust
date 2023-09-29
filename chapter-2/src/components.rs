@@ -1,15 +1,12 @@
+pub mod sprite_component;
+
 use crate::actor::Actor;
 
-pub struct Component {
-    owner: Box<Actor>,
-    update_order: i32,
-}
-
-impl Component {
-    fn new(owner: Box<Actor>, update_order: i32) -> Self {
-        Component {
-            owner,
-            update_order,
-        }
-    }
+pub trait Component {
+    /// .
+    fn new(owner: Box<Actor>, draw_order: u32) -> Self
+    where
+        Self: Sized;
+    fn update(&self, delta_time: f64);
+    fn update_order(&self) -> u32;
 }
