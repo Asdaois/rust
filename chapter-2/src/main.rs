@@ -3,6 +3,7 @@ use crate::game::Game;
 pub mod actor;
 pub mod components;
 pub mod game;
+mod image_loader;
 pub mod math;
 
 fn main() {

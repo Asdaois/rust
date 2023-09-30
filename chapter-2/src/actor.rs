@@ -14,7 +14,7 @@ pub struct Actor {
     pub state: State,
     pub transform: Transform,
     pub components: Vec<Box<dyn Component>>,
-    game: Box<Game>,
+    game: Rc<Game>,
 }
 
 impl Actor {

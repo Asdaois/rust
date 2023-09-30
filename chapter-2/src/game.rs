@@ -1,9 +1,9 @@
-use std::time::Duration;
+use std::{collections::HashMap, path::Path, rc::Rc, time::Duration};
 
 use sdl2::{
-    image::InitFlag,
+    image::{InitFlag, LoadTexture},
     pixels::Color,
-    render::{Canvas, TextureCreator},
+    render::{Canvas, Texture, TextureCreator},
     video::{Window, WindowContext},
 };
 
@@ -20,6 +20,7 @@ pub struct Game {
     pending_actors: Vec<Actor>,
     ticks_count: u32,
     is_running: bool,
+    textures: HashMap<String, Rc<Texture>>,
 }
 
 impl Game {
@@ -49,7 +50,8 @@ impl Game {
             is_running: true,
             input_event_pump: sdl.event_pump().unwrap(),
             subsystem_image: image_subsystem,
-            texture_creator: texture_creator,
+            texture_creator,
+            textures: Default::default(),
         }
     }
     pub fn run_loop(&mut self) {
@@ -104,5 +106,20 @@ impl Game {
         self.canvas.clear();
 
         self.canvas.present();
+    }
+
+    pub fn load_png(mut self, filename: String) -> Rc<sdl2::render::Texture> {
+        if let Some(t) = self.textures.get(&filename) {
+            return t.clone();
+        } else {
+            let t = self
+                .texture_creator
+                .load_texture(Path::new(&filename))
+                .unwrap();
+
+            self.textures.insert(filename.clone(), Rc::new(t)).unwrap();
+
+            return self.textures.get(&filename).unwrap().clone();
+        }
     }
 }
