@@ -3,7 +3,7 @@ name = "gameengine"
 version = "0.0.2"
 
 [workspace]
-members = ["chapter-1", "chapter-2"]
+members = ["chapter-1", "chapter-2", "chapter-2-rev"]
 
 workspace.resolver = "2"
 

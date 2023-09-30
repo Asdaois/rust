@@ -1,4 +1,7 @@
 {
   "cSpell.words": ["scancode"],
-  "rust-analyzer.linkedProjects": ["./chapter-2/Cargo.toml"]
+  "rust-analyzer.linkedProjects": [
+    "./chapter-2/Cargo.toml",
+    "./chapter-2-rev/Cargo.toml"
+  ]
 }
