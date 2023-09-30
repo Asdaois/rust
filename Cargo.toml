@@ -1,5 +1,15 @@
+[package]
+name = "gameengine"
+version = "0.0.2"
 
 [workspace]
 members = ["chapter-1", "chapter-2"]
 
 workspace.resolver = "2"
+
+[[bin]]
+name = "gameengine"
+path = "./chapter-2/src/main"
+
+[dependencies]
+sdl2 = { version = "0.35.2", features = ["bundled", "image"] }
