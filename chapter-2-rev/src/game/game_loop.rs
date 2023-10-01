@@ -37,6 +37,10 @@ impl Game {
 
         canvas.clear();
 
+        for actor in self.actors.iter_mut() {
+            actor.draw()
+        }
+
         canvas.present();
     }
 }

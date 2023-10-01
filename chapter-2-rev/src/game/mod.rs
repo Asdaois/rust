@@ -1,7 +1,8 @@
-use std::{cell::RefCell, collections::HashMap, path::Path, rc::Rc};
+use std::{borrow::BorrowMut, cell::RefCell, collections::HashMap, path::Path, rc::Rc};
 
 use sdl2::{
     image::LoadTexture,
+    rect::Rect,
     render::{Canvas, Texture, TextureCreator},
     video::{Window, WindowContext},
     EventPump,
@@ -18,11 +19,11 @@ pub struct Game {
     width: u32,
     height: u32,
     is_running: bool,
-    canvas: Option<Canvas<Window>>,
+    pub canvas: Option<Canvas<Window>>,
     events: Option<EventPump>,
     texture_creator: Option<TextureCreator<WindowContext>>,
-    textures: HashMap<String, Rc<RefCell<Texture>>>,
-    actors: Vec<Box<dyn Actor>>,
+    textures: HashMap<String, Rc<Texture>>,
+    pub actors: Vec<Box<dyn Actor>>,
 }
 
 impl Game {
@@ -45,7 +46,7 @@ impl Game {
         self.is_running
     }
 
-    pub fn load_texture(&mut self, file_name: String) -> Rc<RefCell<Texture>> {
+    pub fn load_texture(&mut self, file_name: String) -> Rc<Texture> {
         let Some(tc) = self.texture_creator.as_mut() else {
             panic!("Texture creator don't working, imposible to load textures")
         };
@@ -55,12 +56,21 @@ impl Game {
             None => {
                 let t = tc.load_texture(Path::new(&file_name)).unwrap();
 
-                self.textures
-                    .insert(file_name.clone(), Rc::new(RefCell::new(t)))
-                    .unwrap();
+                self.textures.insert(file_name.clone(), Rc::new(t)).unwrap();
 
                 return self.textures.get(&file_name).unwrap().clone();
             }
+        }
+    }
+
+    pub fn draw_texture(&mut self, file_name: String, src: Option<Rect>, dst: Option<Rect>) {
+        let texture = self.load_texture(file_name);
+
+        match self.canvas {
+            Some(ref mut c) => {
+                let _ = c.copy(texture.as_ref(), src, dst);
+            }
+            None => todo!(),
         }
     }
 }
