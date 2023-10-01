@@ -1,3 +1,3 @@
 trait GameLoop {}
-trait Entity {}
+trait Actor {}
 trait Component {}

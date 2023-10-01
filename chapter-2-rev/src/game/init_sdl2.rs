@@ -1,8 +1,13 @@
+use sdl2::image::InitFlag;
+
 use super::Game;
 
 impl Game {
     pub(super) fn init_sdl2(&mut self) {
         let Ok(sdl) = sdl2::init() else { return };
+
+        sdl2::image::init(InitFlag::all()).unwrap();
+
         let window = sdl
             .video()
             .unwrap()
@@ -11,7 +16,10 @@ impl Game {
             .unwrap();
 
         self.canvas = match window.into_canvas().build() {
-            Ok(canvas) => Some(canvas),
+            Ok(canvas) => {
+                self.texture_creator = Some(canvas.texture_creator());
+                Some(canvas)
+            }
             Err(_) => panic!("Canvas can't be initialized"),
         };
 

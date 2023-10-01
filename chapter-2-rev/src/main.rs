@@ -1,5 +1,6 @@
 use game::Game;
 
+pub mod actors;
 mod core;
 mod game;
 

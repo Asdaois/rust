@@ -1,4 +1,8 @@
-use sdl2::{render::Canvas, video::Window, EventPump};
+use sdl2::{
+    render::{Canvas, TextureCreator},
+    video::{Window, WindowContext},
+    EventPump,
+};
 
 mod game_loop;
 mod init_sdl2;
@@ -11,6 +15,7 @@ pub struct Game {
     is_running: bool,
     canvas: Option<Canvas<Window>>,
     events: Option<EventPump>,
+    texture_creator: Option<TextureCreator<WindowContext>>,
 }
 
 impl Game {
