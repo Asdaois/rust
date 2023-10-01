@@ -1,8 +1,13 @@
+use std::{cell::RefCell, collections::HashMap, path::Path, rc::Rc};
+
 use sdl2::{
-    render::{Canvas, TextureCreator},
+    image::LoadTexture,
+    render::{Canvas, Texture, TextureCreator},
     video::{Window, WindowContext},
     EventPump,
 };
+
+use crate::core::Actor;
 
 mod game_loop;
 mod init_sdl2;
@@ -16,6 +21,8 @@ pub struct Game {
     canvas: Option<Canvas<Window>>,
     events: Option<EventPump>,
     texture_creator: Option<TextureCreator<WindowContext>>,
+    textures: HashMap<String, Rc<RefCell<Texture>>>,
+    actors: Vec<Box<dyn Actor>>,
 }
 
 impl Game {
@@ -36,5 +43,24 @@ impl Game {
 
     pub(crate) fn is_running(&self) -> bool {
         self.is_running
+    }
+
+    pub fn load_texture(&mut self, file_name: String) -> Rc<RefCell<Texture>> {
+        let Some(tc) = self.texture_creator.as_mut() else {
+            panic!("Texture creator don't working, imposible to load textures")
+        };
+
+        match self.textures.get(&file_name) {
+            Some(t) => return t.clone(),
+            None => {
+                let t = tc.load_texture(Path::new(&file_name)).unwrap();
+
+                self.textures
+                    .insert(file_name.clone(), Rc::new(RefCell::new(t)))
+                    .unwrap();
+
+                return self.textures.get(&file_name).unwrap().clone();
+            }
+        }
     }
 }
