@@ -1,6 +1,4 @@
-use std::{borrow::BorrowMut, cell::RefCell, ops::Deref, rc::Rc};
-
-use sdl2::render::Texture;
+use std::{borrow::BorrowMut, cell::RefCell, rc::Rc};
 
 use crate::{
     core::{Actor, GameLoop},
@@ -17,8 +15,8 @@ pub struct BackgroundActor {
 
 impl BackgroundActor {
     fn init(&mut self) {
-        let texture_name = "assets/Farback01.png";
-        let texture = self
+        let texture_name = "chapter-2-rev/assets/Farback01.png";
+        let _texture = self
             .game
             .as_ref()
             .borrow_mut()
@@ -30,20 +28,22 @@ impl BackgroundActor {
 
 impl GameLoop for BackgroundActor {
     fn draw(&mut self) {
-        let _ = &self.game.as_ref().borrow_mut().draw_texture(
-            self.textures.first().unwrap().clone(),
-            None,
-            None,
-        );
+        let mut game = self.game.as_ref().borrow_mut();
+
+        game.draw_texture(self.textures.first().unwrap().clone(), None, None);
     }
 }
 
 impl Actor for BackgroundActor {
     fn new(game: Rc<RefCell<Game>>) -> Self {
-        Self {
+        let mut ba = Self {
             game,
             ..Default::default()
-        }
+        };
+
+        ba.init();
+
+        ba
     }
     fn set_position(&mut self, position: crate::math::vector_2::Vector2) {
         self.position = position

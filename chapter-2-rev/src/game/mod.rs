@@ -1,4 +1,4 @@
-use std::{borrow::BorrowMut, cell::RefCell, collections::HashMap, path::Path, rc::Rc};
+use std::{collections::HashMap, path::Path, rc::Rc};
 
 use sdl2::{
     image::LoadTexture,
@@ -54,9 +54,11 @@ impl Game {
         match self.textures.get(&file_name) {
             Some(t) => return t.clone(),
             None => {
-                let t = tc.load_texture(Path::new(&file_name)).unwrap();
+                let texture = tc
+                    .load_texture(Path::new(&file_name))
+                    .expect("Texture don't loaded");
 
-                self.textures.insert(file_name.clone(), Rc::new(t)).unwrap();
+                self.textures.insert(file_name.clone(), Rc::new(texture));
 
                 return self.textures.get(&file_name).unwrap().clone();
             }
