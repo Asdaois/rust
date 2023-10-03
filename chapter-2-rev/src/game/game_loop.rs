@@ -12,11 +12,7 @@ impl Game {
     }
 
     fn process_input(&mut self) {
-        let Some(e) = self.events.as_mut() else {
-            return;
-        };
-
-        for event in e.poll_iter() {
+        for event in self.world.events.poll_iter() {
             match event {
                 sdl2::event::Event::Quit { timestamp: _ } => {
                     self.is_running = false;
@@ -29,18 +25,16 @@ impl Game {
     fn update_game(&self) {}
 
     fn generate_output(&mut self) {
-        let Some(canvas) = self.canvas.as_mut() else {
-            return;
-        };
+        self.world
+            .canvas
+            .set_draw_color(Color::RGBA(0, 0, 255, 255));
 
-        canvas.set_draw_color(Color::RGBA(0, 0, 255, 255));
-
-        canvas.clear();
+        self.world.canvas.clear();
 
         for actor in self.actors.iter_mut() {
-            actor.draw()
+            actor.draw(&mut self.world)
         }
 
-        canvas.present();
+        self.world.canvas.present();
     }
 }

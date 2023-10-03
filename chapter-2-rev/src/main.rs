@@ -11,12 +11,12 @@ mod math;
 
 fn main() {
     env::set_var("RUST_BACKTRACE", "1");
-    let game = Rc::new(RefCell::new(Game::new()));
-    let background = Box::new(BackgroundActor::new(game.clone()));
+    let mut game = Game::new();
+    let background = Box::new(BackgroundActor::new(&mut game.world));
 
-    game.as_ref().borrow_mut().actors.push(background);
+    game.actors.push(background);
 
-    while game.as_ref().borrow().is_running() {
-        game.as_ref().borrow_mut().game_loop()
+    while game.is_running() {
+        game.game_loop()
     }
 }
