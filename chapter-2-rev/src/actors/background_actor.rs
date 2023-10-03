@@ -11,11 +11,10 @@ pub struct BackgroundActor {
 }
 
 impl BackgroundActor {
-    fn init(&mut self, world: &mut Engine) {
-        let texture_file_name = "chapter-2-rev/assets/Farback01.png";
-        let _texture = world.load_texture(texture_file_name.into());
-
-        self.textures.push(texture_file_name.into());
+    pub fn new() -> Self {
+        Self {
+            ..Default::default()
+        }
     }
 }
 
@@ -26,14 +25,11 @@ impl GameLoop for BackgroundActor {
 }
 
 impl Actor for BackgroundActor {
-    fn new(worl: &mut Engine) -> Self {
-        let mut ba = Self {
-            ..Default::default()
-        };
+    fn init(&mut self, world: &mut Engine) {
+        let texture_file_name = "chapter-2-rev/assets/Farback01.png";
+        let _texture = world.load_texture(texture_file_name.into());
 
-        ba.init(worl);
-
-        ba
+        self.textures.push(texture_file_name.into());
     }
     fn set_position(&mut self, position: crate::math::vector_2::Vector2) {
         self.position = position

@@ -9,4 +9,4 @@ workspace.resolver = "2"
 
 [[bin]]
 name = "gameengine"
-path = "./chapter-2/src/main"
+path = "./chapter-2-rev/src/main.rs"

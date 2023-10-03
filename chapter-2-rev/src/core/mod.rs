@@ -5,9 +5,7 @@ pub trait GameLoop {
 }
 
 pub trait Actor: GameLoop {
-    fn new(engine: &mut Engine) -> Self
-    where
-        Self: Sized;
+    fn init(&mut self, engine: &mut Engine);
     fn set_position(&mut self, position: Vector2);
 }
 trait Component: GameLoop {}

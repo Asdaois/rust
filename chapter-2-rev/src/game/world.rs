@@ -8,6 +8,9 @@ use sdl2::{
     EventPump,
 };
 
+/// [`Engine`].
+/// Wrapper round sdl2 engine modules
+/// contains a simple texture manager to avoid reloading a created texture
 pub struct Engine {
     pub canvas: Canvas<Window>,
     pub events: EventPump,
@@ -16,6 +19,11 @@ pub struct Engine {
 }
 
 impl Engine {
+    /// Creates a new [`Engine`].
+    ///
+    /// # Panics
+    ///
+    /// Panics if .
     pub fn new(game_title: String, width: u32, height: u32) -> Self {
         let sdl = sdl2::init().expect("Fail to initialize SDL2");
 
