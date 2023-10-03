@@ -10,10 +10,8 @@ use sdl2::{
 use crate::actor::{self, Actor};
 
 pub struct Game {
-    subsystem_video: sdl2::VideoSubsystem,
     subsystem_timer: sdl2::TimerSubsystem,
     input_event_pump: sdl2::EventPump,
-    subsystem_image: sdl2::image::Sdl2ImageContext,
     texture_creator: TextureCreator<WindowContext>,
     canvas: Canvas<Window>,
     actors: Vec<Actor>,
@@ -30,7 +28,7 @@ impl Game {
     pub fn new(game_title: String, width: u32, height: u32) -> Self {
         let sdl = sdl2::init().unwrap();
         let video_subsystem = sdl.video().unwrap();
-        let image_subsystem = sdl2::image::init(InitFlag::all()).unwrap();
+        sdl2::image::init(InitFlag::all()).unwrap();
 
         let window = video_subsystem
             .window(&game_title, width, height)
@@ -41,7 +39,6 @@ impl Game {
         let texture_creator: TextureCreator<WindowContext> = canvas.texture_creator();
 
         Game {
-            subsystem_video: video_subsystem,
             canvas,
             subsystem_timer: sdl.timer().unwrap(),
             actors: vec![],
@@ -49,7 +46,6 @@ impl Game {
             ticks_count: 0,
             is_running: true,
             input_event_pump: sdl.event_pump().unwrap(),
-            subsystem_image: image_subsystem,
             texture_creator,
             textures: Default::default(),
         }

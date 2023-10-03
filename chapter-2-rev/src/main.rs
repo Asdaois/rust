@@ -1,5 +1,5 @@
 use core::Actor;
-use std::{cell::RefCell, env, rc::Rc};
+use std::env;
 
 use actors::background_actor::BackgroundActor;
 use game::Game;

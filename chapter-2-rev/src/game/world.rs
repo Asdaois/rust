@@ -1,4 +1,4 @@
-use std::{collections::HashMap, path::Path};
+use std::collections::HashMap;
 
 use sdl2::{
     image::{InitFlag, LoadTexture},

@@ -1,8 +1,6 @@
-use std::{borrow::BorrowMut, cell::RefCell, rc::Rc};
-
 use crate::{
     core::{Actor, GameLoop},
-    game::{world::Engine, Game},
+    game::world::Engine,
     math::vector_2::Vector2,
 };
 

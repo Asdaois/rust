@@ -1,16 +1,11 @@
-use std::{cell::RefCell, rc::Rc};
-
-use crate::{
-    game::{world::Engine, Game},
-    math::vector_2::Vector2,
-};
+use crate::{game::world::Engine, math::vector_2::Vector2};
 
 pub trait GameLoop {
-    fn draw(&mut self, world: &mut Engine);
+    fn draw(&mut self, engine: &mut Engine);
 }
 
 pub trait Actor: GameLoop {
-    fn new(world: &mut Engine) -> Self
+    fn new(engine: &mut Engine) -> Self
     where
         Self: Sized;
     fn set_position(&mut self, position: Vector2);
