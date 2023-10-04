@@ -17,7 +17,8 @@ fn main() {
     let background = Box::new(BackgroundActor::new());
     game.actors.push(background);
 
-    let ship = Box::new(ShipActor::new(Vector2 { x: 512., y: 384. }, 1.5, 0.));
+    // let ship = Box::new(ShipActor::new(Vector2 { x: 512., y: 384. }, 1.5, 0.));
+    game.init();
 
     while game.is_running() {
         game.game_loop()

@@ -1,3 +1,26 @@
-use std::path::Component;
+use sdl2::render::Texture;
 
-struct SpriteComponent {}
+use crate::core::{Component, GameLoop};
+
+struct SpriteComponent {
+    draw_order: i64,
+    textures: Vec<String>,
+}
+
+impl GameLoop for SpriteComponent {
+    fn draw(&mut self, engine: &mut crate::game::world::Engine) {
+        todo!()
+    }
+
+    fn update(&mut self, engine: &mut crate::game::world::Engine, delta_time: f64) {
+        todo!()
+    }
+
+    fn init(&mut self, engine: &mut crate::game::world::Engine) {
+        for texture in self.textures.iter() {
+            engine.load_texture(texture.into());
+        }
+    }
+}
+
+impl Component for SpriteComponent {}

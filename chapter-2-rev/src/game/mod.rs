@@ -10,7 +10,7 @@ pub struct Game {
     width: u32,
     height: u32,
     game_title: String,
-    pub world: Engine,
+    pub engine: Engine,
 
     pub actors: Vec<Box<dyn Actor>>,
 }
@@ -22,14 +22,19 @@ impl Game {
             width: 1024,
             height: 768,
             game_title: "ECS".into(),
-            world: Engine::new("ECS".into(), 1024, 768),
+            engine: Engine::new("ECS".into(), 1024, 768),
             is_running: false,
             actors: vec![],
         };
 
-        game.is_running = true;
-
         game
+    }
+
+    pub fn init(&mut self) {
+        for actor in self.actors.iter_mut() {
+            actor.init(&mut self.engine);
+        }
+        self.is_running = true;
     }
 
     pub(crate) fn is_running(&self) -> bool {

@@ -29,9 +29,17 @@ impl Actor for ShipActor {
         self.position = position;
     }
 
-    fn init(&mut self, engine: &mut crate::game::world::Engine) {}
+    fn get_components(&self) -> Vec<Box<dyn crate::core::Component>> {
+        todo!()
+    }
 }
 
 impl GameLoop for ShipActor {
+    fn init(&mut self, engine: &mut crate::game::world::Engine) {}
+
     fn draw(&mut self, engine: &mut crate::game::world::Engine) {}
+
+    fn update(&mut self, engine: &mut crate::game::world::Engine, delta_time: f64) {
+        todo!()
+    }
 }
