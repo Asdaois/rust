@@ -1,13 +1,13 @@
-use components::{Position, Renderable};
-use specs::{Builder, WorldExt};
-
-use crate::{components::LeftMover, state::State};
 mod components;
 mod entities;
 mod state;
 mod systems;
 
 fn main() -> rltk::BError {
+    use components::{Position, Renderable};
+    use specs::{Builder, WorldExt};
+
+    use crate::{components::LeftMover, state::State};
     let mut gs = State::new(); // Global State
     gs.ecs.register::<components::Position>();
     gs.ecs.register::<components::Renderable>();
