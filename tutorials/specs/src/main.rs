@@ -1,8 +1,4 @@
-use std::io::Read;
-
-use specs::{
-    storage, Component, DispatcherBuilder, ReadStorage, RunNow, System, VecStorage, WriteStorage,
-};
+use specs::{Component, DispatcherBuilder, Read, ReadStorage, System, VecStorage, WriteStorage};
 
 #[derive(Debug, Component)]
 #[storage(VecStorage)]
@@ -35,23 +31,32 @@ impl<'a> System<'a> for MyWorld {
 struct UpdatePosition;
 
 impl<'a> System<'a> for UpdatePosition {
-    type SystemData = (ReadStorage<'a, Velocity>, WriteStorage<'a, Position>);
+    type SystemData = (
+        Read<'a, DeltaTime>,
+        ReadStorage<'a, Velocity>,
+        WriteStorage<'a, Position>,
+    );
 
-    fn run(&mut self, (vel, mut pos): Self::SystemData) {
+    fn run(&mut self, (delta_time, vel, mut pos): Self::SystemData) {
         use specs::Join;
 
         for (velocity, position) in (&vel, &mut pos).join() {
-            position.x += velocity.x * 0.05;
-            position.y += velocity.y * 0.05;
+            position.x += velocity.x * delta_time.0;
+            position.y += velocity.y * delta_time.0;
             println!("Update velocity");
         }
     }
 }
 
+#[derive(Default)]
+struct DeltaTime(f32);
+
 fn main() {
     use specs::{Builder, World, WorldExt};
 
     let mut world = World::new();
+    world.insert(DeltaTime(0.05));
+
     world.register::<Position>();
     world.register::<Velocity>();
 
