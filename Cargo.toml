@@ -3,7 +3,7 @@ name = "gameengine"
 version = "0.0.2"
 
 [workspace]
-members = ["chapter-1", "chapter-2", "chapter-2-rev", "design-patterns"]
+members = ["chapter-1", "chapter-2", "chapter-2-rev", "tutorials/roguelike"]
 
 workspace.resolver = "2"
 

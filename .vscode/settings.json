@@ -4,6 +4,7 @@
     "./chapter-2/Cargo.toml",
     "./chapter-2-rev/Cargo.toml",
     "./chapter-2-rev/Cargo.toml",
-    "./design-patterns/command/Cargo.toml"
+    "./design-patterns/command/Cargo.toml",
+    "./tutorials/roguelike/Cargo.toml"
   ]
 }
