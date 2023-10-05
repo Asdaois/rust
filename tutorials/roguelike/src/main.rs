@@ -1,14 +1,16 @@
 use components::{Position, Renderable};
 use specs::{Builder, WorldExt};
 
-use crate::state::State;
+use crate::{components::LeftMover, state::State};
 mod components;
 mod state;
+mod systems;
 
 fn main() -> rltk::BError {
     let mut gs = State::new(); // Global State
     gs.ecs.register::<components::Position>();
     gs.ecs.register::<components::Renderable>();
+    gs.ecs.register::<components::LeftMover>();
 
     gs.ecs
         .create_entity()
@@ -29,6 +31,7 @@ fn main() -> rltk::BError {
                 fg: rltk::RGB::named(rltk::RED),
                 bg: rltk::RGB::named(rltk::BLACK),
             })
+            .with(LeftMover {})
             .build();
     }
 
