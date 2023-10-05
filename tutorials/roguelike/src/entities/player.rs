@@ -3,12 +3,11 @@ use std::cmp::{max, min};
 
 use rltk::VirtualKeyCode;
 use specs::prelude::*;
-use specs_derive::Component;
 
-use crate::{components::Position, state::State};
-
-#[derive(Component, Debug)]
-pub struct Player {}
+use crate::{
+    components::{Player, Position},
+    state::State,
+};
 
 pub fn try_move_player(delta_x: i32, delta_y: i32, ecs: &mut World) {
     let mut positions = ecs.write_storage::<Position>();
