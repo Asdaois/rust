@@ -3,6 +3,7 @@ use specs::{Join, RunNow, World, WorldExt};
 
 use crate::{
     components::{Position, Renderable},
+    entities,
     systems::LeftWalker,
 };
 
@@ -26,6 +27,7 @@ impl GameState for State {
     fn tick(&mut self, ctx: &mut rltk::BTerm) {
         ctx.cls();
 
+        entities::player::player_input(self, ctx);
         self.run_systems();
 
         let positions = self.ecs.read_storage::<Position>();

@@ -3,6 +3,7 @@ use specs::{Builder, WorldExt};
 
 use crate::{components::LeftMover, state::State};
 mod components;
+mod entities;
 mod state;
 mod systems;
 
@@ -11,6 +12,7 @@ fn main() -> rltk::BError {
     gs.ecs.register::<components::Position>();
     gs.ecs.register::<components::Renderable>();
     gs.ecs.register::<components::LeftMover>();
+    gs.ecs.register::<entities::Player>();
 
     gs.ecs
         .create_entity()
@@ -20,6 +22,7 @@ fn main() -> rltk::BError {
             fg: rltk::RGB::named(rltk::YELLOW),
             bg: rltk::RGB::named(rltk::BLACK),
         })
+        .with(entities::Player {})
         .build();
 
     for i in 0..10 {
