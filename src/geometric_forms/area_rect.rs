@@ -6,7 +6,7 @@ pub fn area_rect<T: Mul<Output = T>>(length: T, width: T) -> T {
 
 #[cfg(test)]
 mod test {
-  use crate::area_rect::area_rect;
+  use crate::geometric_forms::area_rect::area_rect;
 
   #[test]
   fn test_area_rect_int() {

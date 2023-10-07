@@ -1,12 +1,14 @@
-use crate::area_rect::area_rect;
-use crate::circle::Circle;
-use crate::shape_utils::ShapeUtils;
+use std::f32::consts::PI;
+
+use crate::geometric_forms::area_rect::area_rect;
+use crate::geometric_forms::circle::Circle;
+use crate::geometric_forms::circle_closure::CircleClosure;
+use crate::misc::counter_finite::CounterFinite;
 use crate::sum::sum_float::sum_float;
 use crate::sum::sum_int::sum_int;
 
-mod area_rect;
-mod circle;
-mod shape_utils;
+mod geometric_forms;
+mod misc;
 mod sum;
 
 fn main() {
@@ -40,7 +42,28 @@ fn main() {
     r: 12.,
   };
 
-  circle.print_shape();
-  println!("area of {}", circle.area());
-  println!("perimeter {}", circle.perimeter());
+  // circle.print_shape();
+  // println!("area of {}", circle.area());
+  // println!("perimeter {}", circle.perimeter());
+
+  let area_circle: fn(f32) -> f32 = |r| PI * r * r;
+
+  let c = CircleClosure {
+    radius: 5.0,
+    area: area_circle,
+  };
+
+  println!("Area of circle = {:?}", (c.area)(c.radius));
+
+  let num = 5;
+  let add_num = |x| x + num;
+
+  let a = add_num(10);
+  println!("a = {a}");
+
+  let cf = CounterFinite { count: 0 };
+
+  for i in cf {
+    println!("{i}");
+  }
 }

@@ -1,7 +1,7 @@
 use std::f64::consts::PI;
 
-use crate::circle::Circle;
-use crate::shape_utils::ShapeUtils;
+use crate::geometric_forms::circle::Circle;
+use crate::geometric_forms::shape_utils::ShapeUtils;
 
 impl ShapeUtils for Circle<f64> {
   fn print_shape(&self) {
