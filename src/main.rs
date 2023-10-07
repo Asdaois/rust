@@ -1,42 +1,120 @@
-// The next line stole the reference
-// fn print_string_data(s: String) {
-// the function need to borrow it
-fn print_string_data(s: &String) {
-  println!(
-    "string = {s} \nptr = {:?} \nlength = {}, \ncapacity = {}\n",
-    s.as_ptr(),
-    s.len(),
-    s.capacity()
-  );
+use std::collections::HashMap;
+
+#[derive(Debug)]
+struct Employee {
+  name: String,
+  age: u8,
+  email_id: String,
+  experience: u8,
+  location: Location,
 }
 
-fn mutate_string_data(s: &mut String, added_text: &str) {
-  s.push_str(added_text);
+impl Employee {
+  fn get_name(&self) -> &str {
+    &self.name
+  }
+
+  fn set_age(&mut self, age: u8) {
+    self.age = age;
+  }
+
+  fn print(&self) {
+    println!("{:#?}", self);
+  }
+
+  fn new(name: String) -> Employee {
+    Employee {
+      name,
+      email_id: "".to_string(),
+      age: 35,
+      experience: 5,
+      location: Location::US(String::from("Unknown")),
+    }
+  }
 }
+
+struct Color(u8, u8, u8, u8);
+
+#[derive(Debug)]
+enum Location {
+  Venezuela(String),
+  US(String),
+  UK(String),
+}
+
+fn is_odd(num: i8) -> Option<bool> {
+  if num % 2 == 1 {
+    return Some(true);
+  }
+
+  return None;
+}
+
+fn get_is_odd_message(response: Option<bool>) -> &'static str {
+  match response {
+    Option::Some(true) => "Is odd",
+    None => "Is not odd",
+    _ => "",
+  }
+}
+
 fn main() {
-  // Scope Begins
-  let mut s = String::from("rust"); // S come into the scope, the
-  s.push_str(" program");
+  let mut employee = Employee::new(String::from("Jose"));
+  employee.set_age(28);
 
-  print_string_data(&s); // This function stole the direction of s, dropping the value in the next
+  let employee2 = Employee {
+    name: String::from("Mar"),
+    email_id: employee.email_id.clone(),
+    age: 24,
+    experience: employee.experience,
+    location: Location::Venezuela(String::from("Puerto Ordaz")),
+  };
 
-  let mut complete_string = s; // value of s moved to complete_string
+  employee.print();
+  employee2.print();
 
-  // data races
-  // let ref_to_cs = &complete_string;
+  let _red = Color(255, 0, 0, 255);
 
-  print_string_data(&complete_string);
+  println!("15 is odd? {:?}", is_odd(15));
+  println!("12 is odd? {:?}", is_odd(12));
 
-  mutate_string_data(&mut complete_string, " for practice mutation in borrow");
-  print_string_data(&complete_string);
+  let is_odd = get_is_odd_message(is_odd(15));
+  println!("15 {is_odd}");
 
-  // the reference is burrowed so, the code don't compile
-  // print_string_data(ref_to_cs);
+  let mut v = vec![1.5, 2.5, 5.0];
+  v.push(24.0);
 
-  let s = String::from("Viva Chavez la lucha sigue ('sarcasmo')");
-  let w1 = &s[..4];
-  let w2 = &s[11..20];
-  println!("Original: {s}");
-  println!("based: {}", w1.to_owned() + w2)
-} // Scope ends. Value of si s dropped here
-  // When the data has a fixed size is stored in STACK otherwise is in the HEAP
+  println!("{:?}", v);
+
+  v.pop();
+
+  println!("{:?}", v);
+
+  println!("First Element: {:?}", v[0]);
+  println!("Second Element: {:?}", v[1]);
+  println!("Third Element: {:?}", v.get(2));
+  println!("Four Element: {:?}", v.get(4));
+
+  // Internalization
+  let s1 = String::from("hello"); // 1 byte for character
+  let s2 = String::from("Привет"); // 2 byte for character
+  println!(
+    "s1 = {s1} -> len of {}\ns2 = {s2} -> len of {}",
+    s1.len(),
+    s2.len()
+  );
+
+  println!("{:?}", &s1[0..1]);
+  println!("{:?}", &s2[0..4]);
+
+  // Safe way, convert to char, then search for char
+  println!("{:?}", s1.chars());
+  println!("{:?}", s2.chars());
+
+  let mut currencies = HashMap::new();
+  currencies.insert("Venezuela", "Petros");
+  currencies.insert("United States", "USD");
+  currencies.insert("United Kingdom", "GBP");
+  currencies.insert("Venezuela", "BS"); // Overwrite previous value
+  println!("{:?}", currencies);
+}
