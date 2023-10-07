@@ -1,5 +1,5 @@
-mod impl_shape_utils;
-mod radius;
+pub mod impl_shape_utils;
+pub mod radius;
 
 #[derive(Debug)]
 pub struct Circle<T> {
