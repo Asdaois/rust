@@ -1,108 +1,42 @@
-fn greet(name: &str) {
-  println!("Hello, {name}!");
+// The next line stole the reference
+// fn print_string_data(s: String) {
+// the function need to borrow it
+fn print_string_data(s: &String) {
+  println!(
+    "string = {s} \nptr = {:?} \nlength = {}, \ncapacity = {}\n",
+    s.as_ptr(),
+    s.len(),
+    s.capacity()
+  );
 }
 
-// function_name(<argument values: type>)
-fn sum(x: i32, y: i32) -> i32 {
-  println!("Calculating sum..."); // Statement
-  x + y // Expression, return a value
+fn mutate_string_data(s: &mut String, added_text: &str) {
+  s.push_str(added_text);
 }
-
 fn main() {
-  // Immutable variable
-  let name = "World";
-  greet(name);
+  // Scope Begins
+  let mut s = String::from("rust"); // S come into the scope, the
+  s.push_str(" program");
 
-  let mut name = "Jose";
-  greet(name);
-  name = "Alberto";
-  greet(name);
+  print_string_data(&s); // This function stole the direction of s, dropping the value in the next
 
-  // This variable should have the type annotated
-  let number: u32 = "10".parse().unwrap();
-  println!("Number is {number}");
+  let mut complete_string = s; // value of s moved to complete_string
 
-  // let number: u32 = "-10".parse().expect("This number don't work because is negative ");
-  // println!("Number is {number}");
+  // data races
+  // let ref_to_cs = &complete_string;
 
-  let number: i32 = "-10".parse().unwrap();
-  println!("Number is {number}");
+  print_string_data(&complete_string);
 
-  // let mut x: u8 = 255;
-  // x += 1; ! Rust prevent overflow
+  mutate_string_data(&mut complete_string, " for practice mutation in borrow");
+  print_string_data(&complete_string);
 
-  let _x = 5.0;
-  let _x: f32 = 5.0;
+  // the reference is burrowed so, the code don't compile
+  // print_string_data(ref_to_cs);
 
-  let _is_true = true;
-  let _is_false: bool = false;
-
-  let char1 = 'a';
-  let char2 = '5';
-  let char3 = '\u{263a}'; // unicode smiling face
-
-  println!("c1 = {char1}, c2 = {char2}, c3 = {char3}");
-
-  let tuple: (i32, char, f64) = (10, 'a', 10.5);
-  println!("first element of tuple {}", tuple.0);
-
-  let array = [10, 20, 30];
-  let num1 = array[0];
-  println!("number one in array is = {}", num1);
-
-  let mut array = [-10, 20, 30];
-  array[0] = 10;
-  println!("number one in array is = {}", num1);
-
-  // let arr: [i32; 10] = todo!();
-  // println!("arr[0] = {}", arr[0]); //! Panic not yet implemented
-
-  let arr = [0; 10];
-  println!("arr[0] = {}", arr[0]);
-
-  let len = arr.len();
-  // Panic index out of bound
-  // println!("last element is = {}", arr[len]);
-  println!("last element is = {}", arr[len - 1]);
-
-  println!("The sum of 7 and 5 is: {}", sum(7, 5));
-
-  let x = 6;
-  if x == 5 {
-    println!("X is 5");
-  } else if x == 9 {
-    println!("X is 9");
-  } else {
-    println!("X is neither 5 or 9")
-  }
-
-  let mut x = 0;
-  loop {
-    println!("X -> {x}");
-    x += 1;
-
-    if x == 3 {
-      break;
-    }
-  }
-
-  // Return value with loop
-  let mut x = 1;
-  let mut i = 0;
-  let result = loop {
-    println!("Get ${x} or double and give it to the next person");
-    x += x;
-
-    i += 1;
-    if i > 5 {
-      break x;
-    }
-  };
-
-  println!("Bankrupt I need to give ${result}");
-
-  let array = [10, 20, 30, 40, -1];
-  for number in array {
-    println!("val = {number}");
-  }
-}
+  let s = String::from("Viva Chavez la lucha sigue ('sarcasmo')");
+  let w1 = &s[..4];
+  let w2 = &s[11..20];
+  println!("Original: {s}");
+  println!("based: {}", w1.to_owned() + w2)
+} // Scope ends. Value of si s dropped here
+  // When the data has a fixed size is stored in STACK otherwise is in the HEAP
