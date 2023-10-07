@@ -1,18 +1,14 @@
-use crate::one_in::one_in;
+use self::file_state::FileState;
 
+mod file_state;
+mod impl_display;
 mod read;
-
-#[derive(Debug, PartialEq)]
-enum FileState {
-    Open,
-    Closed,
-}
 
 #[derive(Debug)]
 pub struct File {
     pub name: String,
     data: Vec<u8>,
-    state: FileState,
+    pub state: FileState,
 }
 
 impl File {

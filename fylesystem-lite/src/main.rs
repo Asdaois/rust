@@ -16,7 +16,8 @@ fn main() {
 
     let text = String::from_utf8_lossy(&buffer);
 
-    println!("{:?}", &file);
+    println!("{:?}", file);
+    println!("{}", file);
     println!("{} is {} byte long", &file.name, file_len);
     println!("{}", text);
 }
