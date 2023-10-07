@@ -1,1 +1,5 @@
-fn main() {}
+mod threads;
+
+fn main() {
+  threads::run()
+}
