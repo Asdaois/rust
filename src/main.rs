@@ -1,69 +1,47 @@
-use std::f32::consts::PI;
+use std::cell::RefCell;
+use std::rc::Rc;
 
-use crate::geometric_forms::area_rect::area_rect;
-use crate::geometric_forms::circle::Circle;
-use crate::geometric_forms::circle_closure::CircleClosure;
-use crate::misc::counter_finite::CounterFinite;
-use crate::sum::sum_float::sum_float;
-use crate::sum::sum_int::sum_int;
+use crate::pointer::recursive_enum::RecursiveEnum;
+use crate::pointer::recursive_enum_ref_cell::RERCELL;
+use crate::pointer::recursive_enum_reference_counting::RERC;
 
-mod geometric_forms;
-mod misc;
-mod sum;
+mod pointer;
 
 fn main() {
-  println!("{}", sum_int(4, 5));
-  println!("{}", sum_float(4., 5.));
+  let x = 10;
+  let y = 20;
+  let x_p = &x;
 
-  let circle = Circle {
-    r: 5,
-    cx: 10,
-    cy: 20,
-  };
+  println!("x = {x}, &x = {:p}", &x);
+  println!("y = {y}, &y = {:p}", &y);
+  println!("x_p = {:p}", x_p);
 
-  println!("{:?}", circle);
+  let x = Box::new(10.5);
+  println!("x = {x}");
 
-  println!("Radius of circle is {}", circle.get_radius());
+  let x = RecursiveEnum::C(
+    2,
+    Box::new(RecursiveEnum::C(1, Box::new(RecursiveEnum::B(2)))),
+  );
 
-  // let circle = Circle {
-  //   r: 5,
-  //   cx: 10,
-  //   cy: 20., <- Fail because all the fields have to be the same
-  // };
-  //
-  // println!("{:?}", circle);
+  let x_size = std::mem::size_of_val(&x);
+  println!("size of x = {x_size}");
 
-  println!("The area of a rect is {}", area_rect(10, 5));
-  println!("The area of a rect is {}", area_rect(10.2, 5.33));
-
-  let circle = Circle {
-    cx: 42.5,
-    cy: 24.3,
-    r: 12.,
-  };
-
-  // circle.print_shape();
-  // println!("area of {}", circle.area());
-  // println!("perimeter {}", circle.perimeter());
-
-  let area_circle: fn(f32) -> f32 = |r| PI * r * r;
-
-  let c = CircleClosure {
-    radius: 5.0,
-    area: area_circle,
-  };
-
-  println!("Area of circle = {:?}", (c.area)(c.radius));
-
-  let num = 5;
-  let add_num = |x| x + num;
-
-  let a = add_num(10);
-  println!("a = {a}");
-
-  let cf = CounterFinite { count: 0 };
-
-  for i in cf {
-    println!("{i}");
+  let x = Rc::new(RERC::B(1, Rc::new(RERC::B(2, Rc::new(RERC::A(3))))));
+  println!("count of x = {}", Rc::strong_count(&x));
+  // add y
+  let _y = RERC::B(5, Rc::clone(&x));
+  println!("count of x = {}", Rc::strong_count(&x));
+  {
+    let _z = RERC::B(10, Rc::clone(&x));
+    println!("count of x = {}", Rc::strong_count(&x));
   }
+
+  println!("count of x = {}", Rc::strong_count(&x));
+
+  let x = Rc::new(RefCell::new(10));
+  let y = Rc::new(RERCELL::B(Rc::clone(&x), Rc::new(RERCELL::A(1))));
+  println!("y = {:?}", y);
+  *x.borrow_mut() += 100;
+  println!("y mutated = {:?}", y);
 }
