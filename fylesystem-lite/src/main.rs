@@ -1,4 +1,4 @@
-use file_system::{close, open, read, File};
+use file_system::{close, open, File};
 
 mod file_system;
 
@@ -8,7 +8,7 @@ fn main() {
     let mut buffer = vec![];
 
     open(&mut file);
-    let file_len = read(&mut file, &mut buffer);
+    let file_len = file.read(&mut buffer);
     close(&mut file);
 
     let text = String::from_utf8_lossy(&buffer);
