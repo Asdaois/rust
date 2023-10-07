@@ -10,13 +10,13 @@ fn main() {
 
     file = open(file).unwrap();
 
-    let file_len = file.read(&mut buffer);
+    let file_len = file.read(&mut buffer).unwrap();
 
     file = close(file).unwrap();
 
     let text = String::from_utf8_lossy(&buffer);
 
     println!("{:?}", &file);
-    println!("{} is {} byte long", &file.name, file_len.unwrap());
+    println!("{} is {} byte long", &file.name, file_len);
     println!("{}", text);
 }
