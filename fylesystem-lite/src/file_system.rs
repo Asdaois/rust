@@ -5,16 +5,9 @@ pub struct File {
 }
 
 impl File {
-    pub fn new(name: &str) -> File {
+    pub fn new(name: &str, data: Vec<u8>) -> File {
         File {
             name: String::from(name),
-            data: Vec::new(),
-        }
-    }
-
-    pub fn with_data(&self, data: Vec<u8>) -> File {
-        File {
-            name: String::from(&self.name),
             data,
         }
     }
