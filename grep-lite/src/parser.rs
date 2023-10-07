@@ -8,8 +8,8 @@ pub struct Cli {
     pub pattern: String,
 
     /// The file to search
-    #[arg(required = true, short)]
-    pub file_path: String,
+    #[arg(required = true, short, default_value = "-")]
+    pub input: String,
 }
 
 impl Cli {
