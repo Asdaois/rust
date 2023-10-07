@@ -10,7 +10,7 @@ fn main() {
 
     file = open(file).unwrap();
 
-    let file_len = file.read(&mut buffer).unwrap();
+    file.read(&mut buffer).unwrap();
 
     file = close(file).unwrap();
 
@@ -18,6 +18,6 @@ fn main() {
 
     println!("{:?}", file);
     println!("{}", file);
-    println!("{} is {} byte long", &file.name, file_len);
+    println!("{} is {} byte long", file.name(), file.len());
     println!("{}", text);
 }
