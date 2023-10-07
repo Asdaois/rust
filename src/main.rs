@@ -1,5 +1,5 @@
-mod threads;
+mod oop;
 
 fn main() {
-  threads::run()
+  oop::run()
 }
