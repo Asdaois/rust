@@ -6,6 +6,10 @@ pub struct Cli {
     /// The pattern to search for
     #[arg(required = true, short)]
     pub pattern: String,
+
+    /// The file to search
+    #[arg(required = true, short)]
+    pub file_path: String,
 }
 
 impl Cli {

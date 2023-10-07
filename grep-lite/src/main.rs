@@ -1,5 +1,10 @@
 mod parser;
 
+use std::{
+    fs::File,
+    io::{BufRead, BufReader},
+};
+
 use regex::Regex;
 
 fn main() {
@@ -7,18 +12,17 @@ fn main() {
 
     let re = Regex::new(&cli.pattern).unwrap();
 
-    let quote = "\
-Every face, every shop, bedroom window, public-house, and
-dark square is a picture feverishly turned--in search of what?
-It is the same with books.
-What do we seek through millions of pages?";
+    let file = File::open(cli.file_path).unwrap();
+    let reader = BufReader::new(file);
 
-    for (i, line) in quote.lines().enumerate() {
-        let contains_substring = re.find(line);
-
-        match contains_substring {
-            Some(_) => println!("{}: {}", i + 1, line),
-            None => (),
+    for (i, reader_result) in reader.lines().enumerate() {
+        if let Ok(line) = reader_result {
+            match re.find(line.as_str()) {
+                Some(_) => println!("{}: {}", i + 1, line),
+                None => (),
+            }
+        } else {
+            todo!()
         }
     }
 }
