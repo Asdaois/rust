@@ -1,19 +1,22 @@
 use file_system::{close, open, File};
 
 mod file_system;
+mod one_in;
 
 fn main() {
     let mut file = File::new("file.txt", vec![114, 117, 115, 116, 33]);
 
     let mut buffer = vec![];
 
-    open(&mut file);
+    file = open(file).unwrap();
+
     let file_len = file.read(&mut buffer);
-    close(&mut file);
+
+    file = close(file).unwrap();
 
     let text = String::from_utf8_lossy(&buffer);
 
     println!("{:?}", &file);
-    println!("{} is {} byte long", &file.name, file_len);
+    println!("{} is {} byte long", &file.name, file_len.unwrap());
     println!("{}", text);
 }

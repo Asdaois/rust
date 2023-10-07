@@ -1,3 +1,5 @@
+use crate::one_in::one_in;
+
 mod read;
 #[derive(Debug)]
 pub struct File {
@@ -14,9 +16,18 @@ impl File {
     }
 }
 
-pub fn open(file: &mut File) -> bool {
-    true
+pub fn open(file: File) -> Result<File, String> {
+    if one_in(10000) {
+        return Err("Interrupted by signal".to_string());
+    }
+
+    Ok(file)
 }
-pub fn close(file: &mut File) -> bool {
-    true
+
+pub fn close(file: File) -> Result<File, String> {
+    if one_in(10000) {
+        return Err("Interrupted by signal".to_string());
+    }
+
+    Ok(file)
 }
