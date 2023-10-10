@@ -1,4 +1,10 @@
+use std::{
+    borrow::BorrowMut,
+    cell::{RefCell, RefMut},
+};
+
 struct Health(i32);
+#[derive(PartialEq, Eq)]
 struct Name(&'static str);
 
 trait ComponentVec {
@@ -7,9 +13,11 @@ trait ComponentVec {
     fn as_any_mut(&mut self) -> &mut dyn std::any::Any;
 }
 
-impl<T: 'static> ComponentVec for Vec<Option<T>> {
+type ComponentVecImpl<T> = RefCell<Vec<Option<T>>>;
+
+impl<T: 'static> ComponentVec for ComponentVecImpl<T> {
     fn push_none(&mut self) {
-        self.push(None)
+        self.get_mut().push(None)
     }
 
     fn as_any(&self) -> &dyn std::any::Any {
@@ -53,9 +61,9 @@ impl World {
         for component_vec in self.components.iter_mut() {
             if let Some(component_vec) = component_vec
                 .as_any_mut()
-                .downcast_mut::<Vec<Option<ComponentType>>>()
+                .downcast_mut::<ComponentVecImpl<ComponentType>>()
             {
-                component_vec[entity_id] = Some(component);
+                component_vec.get_mut()[entity_id] = Some(component);
                 return;
             }
         }
@@ -66,20 +74,23 @@ impl World {
 
         // All existing entities don't have this component, so we give them `None`
         for _ in 0..self.entities_count {
-            new_component_vec.push_none();
+            new_component_vec.push(None);
         }
 
         new_component_vec[entity_id] = Some(component);
-        self.components.push(Box::new(new_component_vec));
+        self.components
+            .push(Box::new(RefCell::new(new_component_vec)));
     }
 
-    fn borrow_component_vec<ComponentType: 'static>(&self) -> Option<&Vec<Option<ComponentType>>> {
+    fn borrow_component_vec<ComponentType: 'static>(
+        &self,
+    ) -> Option<RefMut<Vec<Option<ComponentType>>>> {
         for component_vec in self.components.iter() {
             if let Some(component_vec) = component_vec
                 .as_any()
-                .downcast_ref::<Vec<Option<ComponentType>>>()
+                .downcast_ref::<ComponentVecImpl<ComponentType>>()
             {
-                return Some(component_vec);
+                return Some(component_vec.borrow_mut());
             }
         }
         None
@@ -99,23 +110,31 @@ mod tests {
         world.add_component_to_entity(id, Name("Prometheus"));
 
         let id = world.new_entity();
-        world.add_component_to_entity(id, Health(-100));
+        world.add_component_to_entity(id, Health(100));
         world.add_component_to_entity(id, Name("Jose"));
 
-        let data = world
-            .borrow_component_vec::<Health>()
-            .unwrap()
-            .iter()
-            .zip(world.borrow_component_vec::<Name>().unwrap().iter());
+        let mut healths = world.borrow_component_vec::<Health>().unwrap();
+        let mut names = world.borrow_component_vec::<Name>().unwrap();
+        let zip = healths.iter_mut().zip(names.iter_mut());
+        let iter = zip.filter_map(|(health, name)| Some((health.as_mut()?, name.as_ref()?)));
 
-        for (health, name) in
-            data.filter_map(|(health, name)| Some((health.as_ref()?, name.as_ref()?)))
-        {
-            if health.0 < 0 {
-                println!("{} has perished!", name.0)
-            } else {
-                println!("{} is still healthy", name.0)
+        for (health, name) in iter {
+            println!("name: {:?}", name.0 == "Jose");
+            if name.0 == "Jose" {
+                *health = Health(-100)
             }
+        }
+
+        let zip = healths.iter_mut().zip(names.iter_mut());
+        let iter = zip.filter_map(|(health, name)| Some((health.as_mut()?, name.as_ref()?)));
+        for (health, name) in iter {
+            println!("health: {:?}", health.0);
+            if health.0 < 0 {
+                println!("{} is dead", name.0);
+                continue;
+            }
+
+            println!("{} is still healthy", name.0)
         }
     }
 }
