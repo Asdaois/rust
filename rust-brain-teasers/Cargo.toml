@@ -1,2 +1,3 @@
 [workspace]
-members = ["three_and_a_bit", "standard_input"]
+members = ["three_and_a_bit", "standard_input", "type_conversion"]
+resolver = "2"
