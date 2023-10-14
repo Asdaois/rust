@@ -28,10 +28,6 @@ impl Actor for ShipActor {
     fn set_position(&mut self, position: Vector2) {
         self.position = position;
     }
-
-    fn get_components(&self) -> Vec<Box<dyn crate::core::Component>> {
-        todo!()
-    }
 }
 
 impl GameLoop for ShipActor {
