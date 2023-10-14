@@ -1,5 +1,3 @@
-use sdl2::render::Texture;
-
 use crate::core::{Component, GameLoop};
 
 struct SpriteComponent {

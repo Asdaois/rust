@@ -1,4 +1,4 @@
-use crate::core::{Actor, Component};
+use crate::core::Actor;
 
 use self::engine::Engine;
 
