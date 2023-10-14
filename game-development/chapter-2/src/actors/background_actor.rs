@@ -1,6 +1,6 @@
 use crate::{
-    components::{self, background_component::BackgroundComponent},
-    core::{Actor, Component, Components, GameLoop},
+    components::background_component::BackgroundComponent,
+    core::{component_system::ComponentSystem, Actor, GameLoop},
     game::world::Engine,
     math::vector_2::Vector2,
 };
@@ -9,7 +9,7 @@ use crate::{
 pub struct BackgroundActor {
     position: Vector2,
     textures: Vec<String>,
-    components: Components,
+    component_system: ComponentSystem,
 }
 
 impl BackgroundActor {
@@ -22,7 +22,7 @@ impl BackgroundActor {
 
 impl GameLoop for BackgroundActor {
     fn draw(&mut self, word: &mut Engine) {
-        for component in self.components.iter_mut() {
+        for component in self.component_system.components.iter_mut() {
             component.draw(word);
         }
     }
@@ -32,6 +32,10 @@ impl GameLoop for BackgroundActor {
         let mut component = BackgroundComponent::new(None);
         component.add_texture("assets/Farback01.png".into());
         component.add_texture("assets/Farback02.png".into());
+
+        self.component_system.add(component);
+
+        self.component_system.init(world);
     }
 }
 

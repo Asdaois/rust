@@ -1,7 +1,15 @@
 use super::{Component, Components, GameLoop};
 
-struct ComponentSystem {
-    components: Components,
+pub struct ComponentSystem {
+    pub components: Components,
+}
+
+impl Default for ComponentSystem {
+    fn default() -> Self {
+        Self {
+            components: Default::default(),
+        }
+    }
 }
 
 impl GameLoop for ComponentSystem {
@@ -25,8 +33,7 @@ impl ComponentSystem {
         Self { components }
     }
 
-    fn add(&mut self, component: impl Component + 'static) {
-        let components = &mut self.components;
-        components.push(Box::new(component));
+    pub fn add(&mut self, component: impl Component + 'static) {
+        self.components.push(Box::new(component));
     }
 }
