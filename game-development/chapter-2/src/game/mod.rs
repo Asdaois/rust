@@ -1,9 +1,9 @@
 use crate::core::{Actor, Component};
 
-use self::world::Engine;
+use self::engine::Engine;
 
+pub mod engine;
 mod game_loop;
-pub mod world;
 
 pub struct Game {
     is_running: bool,

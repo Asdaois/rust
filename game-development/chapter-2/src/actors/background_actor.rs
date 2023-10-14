@@ -1,7 +1,7 @@
 use crate::{
     components::background_component::BackgroundComponent,
     core::{component_system::ComponentSystem, Actor, GameLoop},
-    game::world::Engine,
+    game::engine::Engine,
     math::vector_2::Vector2,
 };
 
@@ -21,21 +21,21 @@ impl BackgroundActor {
 }
 
 impl GameLoop for BackgroundActor {
-    fn draw(&mut self, word: &mut Engine) {
+    fn draw(&mut self, engine: &mut Engine) {
         for component in self.component_system.components.iter_mut() {
-            component.draw(word);
+            component.draw(engine);
         }
     }
 
     fn update(&mut self, engine: &mut Engine, delta_time: f64) {}
-    fn init(&mut self, world: &mut Engine) {
+    fn init(&mut self, engine: &mut Engine) {
         let mut component = BackgroundComponent::new(None);
         component.add_texture("assets/Farback01.png".into());
         component.add_texture("assets/Farback02.png".into());
 
         self.component_system.add(component);
 
-        self.component_system.init(world);
+        self.component_system.init(engine);
     }
 }
 

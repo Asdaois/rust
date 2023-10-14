@@ -13,15 +13,15 @@ impl Default for ComponentSystem {
 }
 
 impl GameLoop for ComponentSystem {
-    fn init(&mut self, engine: &mut crate::game::world::Engine) {}
+    fn init(&mut self, engine: &mut crate::game::engine::Engine) {}
 
-    fn draw(&mut self, engine: &mut crate::game::world::Engine) {
+    fn draw(&mut self, engine: &mut crate::game::engine::Engine) {
         for component in self.components.iter_mut() {
             component.draw(engine)
         }
     }
 
-    fn update(&mut self, engine: &mut crate::game::world::Engine, delta_time: f64) {
+    fn update(&mut self, engine: &mut crate::game::engine::Engine, delta_time: f64) {
         for component in self.components.iter_mut() {
             component.update(engine, delta_time)
         }

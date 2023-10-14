@@ -1,6 +1,6 @@
 pub mod component_system;
 
-use crate::{game::world::Engine, math::vector_2::Vector2};
+use crate::{game::engine::Engine, math::vector_2::Vector2};
 
 pub type Components = Vec<Box<dyn Component + 'static>>;
 

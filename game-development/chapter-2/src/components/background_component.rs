@@ -19,17 +19,17 @@ impl BackgroundComponent {
 }
 
 impl GameLoop for BackgroundComponent {
-    fn init(&mut self, engine: &mut crate::game::world::Engine) {
+    fn init(&mut self, engine: &mut crate::game::engine::Engine) {
         for texture in self.textures.iter() {
             engine.load_texture(texture.into());
         }
     }
 
-    fn draw(&mut self, engine: &mut crate::game::world::Engine) {
+    fn draw(&mut self, engine: &mut crate::game::engine::Engine) {
         engine.draw_texture(self.textures.first().unwrap().clone(), None, None);
     }
 
-    fn update(&mut self, engine: &mut crate::game::world::Engine, delta_time: f64) {
+    fn update(&mut self, engine: &mut crate::game::engine::Engine, delta_time: f64) {
         todo!()
     }
 }
