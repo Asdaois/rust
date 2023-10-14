@@ -1,15 +1,26 @@
-use crate::game::Game;
+use core::Actor;
+use std::env;
 
-pub mod actor;
+use actors::{background_actor::BackgroundActor, ship_actor::ShipActor};
+use game::Game;
+use math::vector_2::Vector2;
+
+pub mod actors;
 pub mod components;
-pub mod game;
-mod image_loader;
-pub mod math;
+mod core;
+mod game;
+mod math;
 
 fn main() {
-    let mut game = Box::new(Game::new("Platform".into(), 1024, 768));
+    env::set_var("RUST_BACKTRACE", "1");
+    let mut game = Game::new();
+    let background = Box::new(BackgroundActor::new());
+    game.actors.push(background);
 
-    if game.is_running() {
-        game.run_loop();
+    // let ship = Box::new(ShipActor::new(Vector2 { x: 512., y: 384. }, 1.5, 0.));
+    game.init();
+
+    while game.is_running() {
+        game.game_loop()
     }
 }
