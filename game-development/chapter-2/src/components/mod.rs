@@ -1,1 +1,2 @@
-mod sprite_component;
+pub mod background_component;
+pub mod sprite_component;

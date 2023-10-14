@@ -1,5 +1,6 @@
 use crate::{
-    core::{Actor, Component, ComponentSystem, Components, GameLoop},
+    components::{self, background_component::BackgroundComponent},
+    core::{Actor, Component, Components, GameLoop},
     game::world::Engine,
     math::vector_2::Vector2,
 };
@@ -8,6 +9,7 @@ use crate::{
 pub struct BackgroundActor {
     position: Vector2,
     textures: Vec<String>,
+    components: Components,
 }
 
 impl BackgroundActor {
@@ -20,21 +22,16 @@ impl BackgroundActor {
 
 impl GameLoop for BackgroundActor {
     fn draw(&mut self, word: &mut Engine) {
-        word.draw_texture(self.textures.first().unwrap().clone(), None, None);
+        for component in self.components.iter_mut() {
+            component.draw(word);
+        }
     }
 
     fn update(&mut self, engine: &mut Engine, delta_time: f64) {}
     fn init(&mut self, world: &mut Engine) {
-        let texture_file_name = "assets/Farback01.png";
-        let _texture = world.load_texture(texture_file_name.into());
-
-        self.textures.push(texture_file_name.into());
-    }
-}
-
-impl ComponentSystem for BackgroundActor {
-    fn get(&self) -> Components {
-        vec![]
+        let mut component = BackgroundComponent::new(None);
+        component.add_texture("assets/Farback01.png".into());
+        component.add_texture("assets/Farback02.png".into());
     }
 }
 
